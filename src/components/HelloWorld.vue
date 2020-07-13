@@ -27,12 +27,20 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+    <VueShowdown :markdown="readme"/>
   </div>
 </template>
 
 <script>
+import readme from '@/markdown/README.md';
+console.log(readme);
 export default {
   name: 'HelloWorld',
+  data() {
+    return {
+      readme,
+    };
+  },
   props: {
     msg: String
   }

@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <el-row type="flex" justify="center" :gutter="20">
+      <el-col :xs="{span: 24}" :sm="{span: 20}" :md="{span: 16}" :lg="{span: 12}">
+        <el-row>
+          <el-col :span="24">
+            <h1>{{ sitename }}</h1>
+          </el-col>
+        </el-row>
+        <FileBox></FileBox>
+        <ReadMe></ReadMe>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FileBox from '@/components/FileBox';
+import ReadMe from '@/components/ReadMe';
 
 export default {
   name: 'App',
+  data() {
+    return {
+      sitename: 'Steem Data Server',
+    };
+  },
   components: {
-    HelloWorld
-  }
+    FileBox,
+    ReadMe,
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

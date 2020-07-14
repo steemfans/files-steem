@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row type="flex" justify="center" :gutter="20">
-      <el-col :xs="{span: 24}" :sm="{span: 20}" :md="{span: 16}" :lg="{span: 12}">
+      <el-col :xs="{span: 24}" :sm="{span: 20}" :md="{span: 16}" :lg="{span: 12}" style="padding: 0 30px;">
         <el-row>
           <el-col :span="24">
             <h1>{{ sitename }}</h1>
@@ -33,4 +33,7 @@ export default {
 </script>
 
 <style>
+h1, h2 {
+  color: #444;
+}
 </style>

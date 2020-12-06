@@ -12,7 +12,7 @@
           width="300">
           <template slot-scope="scope">
             <i class="el-icon-document" v-if="scope.row.fileType === 'flie'"></i>
-            <span style="margin-left: 10px">{{ scope.row.fileName }}</span>
+            <span style="margin-left: 10px"><a href="#">{{ scope.row.fileName }}</a></span>
           </template>
         </el-table-column>
         <el-table-column

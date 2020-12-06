@@ -33,6 +33,66 @@ file:  steem_ah.tar.lz4
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 
+### 4.hivenode (this node is for the hivemind data source)
+```
+file: steem_hive.tar.lz4
+
+plugin = reputation reputation_api database_api condenser_api block_api market_history_api
+```
+
+### 5.hivemind
+```
+file: hivemind.tar.lz4
+
+1) make a folder named hivemind
+2) cd hivemind
+3) create a docker-compose.yml file with below content:
+
+version: '3'
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: steem
+      POSTGRES_PASSWORD: steem123
+      POSTGRES_DB: hivedb
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./my-postgres.conf:/etc/postgresql/postgresql.conf
+    restart: always
+  hive:
+    depends_on:
+      - db
+    image: steemit/hivemind:latest
+    environment:
+      DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
+      LOG_LEVEL: INFO
+      STEEMD_URL: http://172.20.0.114:8091 # This is the hivenode or other support api
+      SYNC_SERVICE: 1
+      MAX_BATCH: 50
+      MAX_WORKERS: 2
+    links:
+      - db:db
+    restart: always
+
+4) create the postgre config file **my-postgres.conf** with below content:
+
+listen_addresses = '*'
+effective_cache_size = 12GB # 50-75% of avail memory
+maintenance_work_mem = 2GB
+random_page_cost = 2.0      # assuming SSD storage
+shared_buffers = 4GB        # 25% of memory
+work_mem = 512MB
+synchronous_commit = off
+checkpoint_completion_target = 0.9
+checkpoint_timeout = 30min
+max_wal_size = 4GB
+
+5) change the params of postgres to fit your system
+6) unarchive the hivemind.tar.lz4 file to the hivemind folder
+7) docker-compose run -d
+```
+
 ## Other
 
 If you have any issue, please email me. My email is [work#akawa.ink] (replace # to @).
@@ -77,10 +137,70 @@ file:  steem_ah.tar.lz4
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 
+### 4.hivenode (这个节点作为hivemind的数据源)
+```
+file: steem_hive.tar.lz4
+
+plugin = reputation reputation_api database_api condenser_api block_api market_history_api
+```
+
+### 5.hivemind
+```
+file: hivemind.tar.lz4
+
+1) 创建hivemind目录
+2) cd hivemind
+3) 创建 docker-compose.yml，内容如下:
+
+version: '3'
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: steem
+      POSTGRES_PASSWORD: steem123
+      POSTGRES_DB: hivedb
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./my-postgres.conf:/etc/postgresql/postgresql.conf
+    restart: always
+  hive:
+    depends_on:
+      - db
+    image: steemit/hivemind:latest
+    environment:
+      DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
+      LOG_LEVEL: INFO
+      STEEMD_URL: http://172.20.0.114:8091 # 换成你的hivenode地址或其他可用的api地址
+      SYNC_SERVICE: 1
+      MAX_BATCH: 50
+      MAX_WORKERS: 2
+    links:
+      - db:db
+    restart: always
+
+4) 创建 postgre 配置文件 **my-postgres.conf**，内容如下:
+
+listen_addresses = '*'
+effective_cache_size = 12GB # 50-75% of avail memory
+maintenance_work_mem = 2GB
+random_page_cost = 2.0      # assuming SSD storage
+shared_buffers = 4GB        # 25% of memory
+work_mem = 512MB
+synchronous_commit = off
+checkpoint_completion_target = 0.9
+checkpoint_timeout = 30min
+max_wal_size = 4GB
+
+5) 根据你的系统情况调整 postgres 参数
+6) 解压缩 hivemind.tar.lz4 到 hivemind 目录
+7) docker-compose run -d
+```
+
 ## 其他
 
 如果有什么问题，可以直接给我发邮件，地址是 [work#akawa.ink] (把 # 换成 @)。
 
 你也可以加入我们的 Discord 服务器 => [https://discord.gg/QTuZr5F](https://discord.gg/QTuZr5F) .
 
-PS: 我是Steem见证人，欢迎给我投票。 =》 [Vote ME!](https://auth.steem.fans/sign/account_witness_vote?approve=1&witness=ety001) 
+PS: 我是Steem见证人，欢迎给我投票。 =》 [Vote ME!](https://auth.steem.fans/sign/account_witness_vote?approve=1&witness=ety001)

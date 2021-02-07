@@ -16,6 +16,7 @@ file:  steem_witness.tar.lz4
 
 plugin = witness
 ```
+> Build a witness node: [A simple tuturial for a dockerize steem witness deployment](https://steemit.com/steem/@ety001/a-simple-tuturial-for-a-dockerize-steem-witness-deployment)
 
 ### 2. fullnode
 ```
@@ -120,6 +121,7 @@ file:  steem_witness.tar.lz4
 
 plugin = witness
 ```
+> 搭建见证人节点: [A simple tuturial for a dockerize steem witness deployment](https://steemit.com/steem/@ety001/a-simple-tuturial-for-a-dockerize-steem-witness-deployment)
 
 ### 2. fullnode
 ```

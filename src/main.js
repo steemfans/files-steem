@@ -9,6 +9,7 @@ Vue.config.productionTip = false;
 Vue.use(VueShowdown, {
   options: {
     emoji: true,
+    flavor: 'github',
   },
 });
 // Vue.use(ElementUI);

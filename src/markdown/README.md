@@ -10,6 +10,8 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 
 ## Plugin and other config References
 
+> Please comment `shared-file-dir = /shm/` first.
+
 ### 1. witness node
 ```
 file:  steem_witness.tar.lz4

@@ -7,9 +7,9 @@ import { Row, Col, Table, TableColumn, Loading, Message } from 'element-ui';
 
 Vue.config.productionTip = false;
 Vue.use(VueShowdown, {
+  flavor: 'github',
   options: {
     emoji: true,
-    flavor: 'github',
   },
 });
 // Vue.use(ElementUI);

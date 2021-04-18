@@ -117,6 +117,8 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 
 ## 插件配置和其他配置参考
 
+> **注意**: 请先注释掉 `shared-file-dir = /shm/`。
+
 ### 1. witness node
 ```
 file:  steem_witness.tar.lz4

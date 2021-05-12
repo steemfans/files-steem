@@ -6,8 +6,6 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 
 * You could visit [https://files.steem.fans](https://files.steem.fans) to explore and download all files I supply.
 
-* And you also could use `rsync` to get files. The path is `rsync://files.steem.fans/data`. For example, you can get `block_log.tar.lz4` like this `rsync rsync://files.steem.fans/data/block_log.tar.lz4 ./` .
-
 ## Plugin and other config References
 
 > **NOTICE**: Please comment `shared-file-dir = /shm/` first.
@@ -113,7 +111,6 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 ## 如何使用
 
 * 你可以直接访问 [https://files.steem.fans](https://files.steem.fans) 获取到你要下载的数据文件
-* 你也可以使用 `rsync` 工具下载，地址是 `rsync://files.steem.fans/steem`。举例：你可以通过下面的命令 `rsync   rsync://files.steem.fans/steem/block_log.tar.lz4   ./` 下载到根目录下面的 `block_log.tar.lz4` 文件。
 
 ## 插件配置和其他配置参考
 

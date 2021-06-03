@@ -34,14 +34,7 @@ file:  steem_ah.tar.lz4
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 
-### 4.hivenode (this node is for the hivemind data source)
-```
-file: steem_hive.tar.lz4
-
-plugin = reputation reputation_api database_api condenser_api block_api market_history_api
-```
-
-### 5.hivemind
+### 4.hivemind
 ```
 file: hivemind.tar.lz4
 
@@ -68,7 +61,7 @@ services:
     environment:
       DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
       LOG_LEVEL: INFO
-      STEEMD_URL: http://172.20.0.114:8091 # This is the hivenode or other support api
+      STEEMD_URL: http://172.20.0.114:8091 # This is the fullnode api
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
@@ -140,14 +133,7 @@ file:  steem_ah.tar.lz4
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 
-### 4.hivenode (这个节点作为hivemind的数据源)
-```
-file: steem_hive.tar.lz4
-
-plugin = reputation reputation_api database_api condenser_api block_api market_history_api
-```
-
-### 5.hivemind
+### 4.hivemind
 ```
 file: hivemind.tar.lz4
 
@@ -174,7 +160,7 @@ services:
     environment:
       DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
       LOG_LEVEL: INFO
-      STEEMD_URL: http://172.20.0.114:8091 # 换成你的hivenode地址或其他可用的api地址
+      STEEMD_URL: http://172.20.0.114:8091 # 换成你的fullnode地址或其他可用的api地址
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2

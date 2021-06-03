@@ -12,7 +12,11 @@
           width="300">
           <template slot-scope="scope">
             <i class="el-icon-document" v-if="scope.row.fileType === 'flie'"></i>
-            <span style="margin-left: 10px"><a v-bind:href="scope.row.fileType === 'flie' ? scope.row.filePath : '#'">{{ scope.row.fileName }}</a></span>
+            <span style="margin-left: 10px">
+              <a :href="getUrl(scope.row)">
+                {{ scope.row.fileName }}
+              </a>
+            </span>
           </template>
         </el-table-column>
         <el-table-column
@@ -50,6 +54,12 @@ export default {
     this.getPaths();
   },
   methods: {
+    getUrl(row) {
+      if (row.fileType === 'file') {
+        return row.filePath;
+      }
+      return '#';
+    }
     getPaths(fpath = '') {
       this.loading = true;
       let api;

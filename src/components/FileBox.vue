@@ -13,7 +13,7 @@
           <template slot-scope="scope">
             <i class="el-icon-document" v-if="scope.row.fileType === 'flie'"></i>
             <span style="margin-left: 10px">
-              <a :href="getUrl(scope.row)">
+              <a :href="getUrl(scope.row)" target="_blank">
                 {{ scope.row.fileName }}
               </a>
             </span>
@@ -59,7 +59,7 @@ export default {
         return row.filePath;
       }
       return '#';
-    }
+    },
     getPaths(fpath = '') {
       this.loading = true;
       let api;
@@ -109,7 +109,7 @@ export default {
     },
     rowClick(row) {
       if (row.fileType === 'file') {
-        window.open(row.filePath);
+        // window.open(row.filePath);
       } else {
         this.getPaths(row.filePath);
       }

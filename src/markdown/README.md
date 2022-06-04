@@ -12,8 +12,13 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 
 ### 1. witness node
 ```
-file:  steem_witness.tar.lz4
+docker image:
+ety001/steem-mira:0.23.1
 
+file:
+steem_witness.tar.lz4
+
+plugin settings in config.ini:
 plugin = witness
 ```
 > Build a witness node: [A simple tuturial for a dockerize steem witness deployment](https://steemit.com/steem/@ety001/a-simple-tuturial-for-a-dockerize-steem-witness-deployment)
@@ -111,8 +116,13 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 
 ### 1. witness node
 ```
-file:  steem_witness.tar.lz4
+docker image:
+ety001/steem-mira:0.23.1
 
+file:
+steem_witness.tar.lz4
+
+plugin settings in config.ini:
 plugin = witness
 ```
 > 搭建见证人节点: [A simple tuturial for a dockerize steem witness deployment](https://steemit.com/steem/@ety001/a-simple-tuturial-for-a-dockerize-steem-witness-deployment)

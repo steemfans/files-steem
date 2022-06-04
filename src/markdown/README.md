@@ -39,8 +39,13 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 
 ### 3.ahnode
 ```
-file:  steem_ah.tar.lz4
+docker image:
+ety001/steem-ah-mira:0.23.0
 
+file:
+steem_ah.tar.lz4
+
+plugin settings in config.ini:
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 
@@ -148,8 +153,13 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 
 ### 3.ahnode
 ```
-file:  steem_ah.tar.lz4
+docker image:
+ety001/steem-ah-mira:0.23.0
 
+file:
+steem_ah.tar.lz4
+
+plugin settings in config.ini:
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 

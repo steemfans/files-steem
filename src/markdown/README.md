@@ -25,8 +25,13 @@ plugin = witness
 
 ### 2. fullnode
 ```
-file:  steem_api.tar.lz4
+docker image:
+ety001/steem-full-mira:0.23.1
 
+file:
+steem_api.tar.lz4
+
+plugin settings in config.ini:
 shared-file-full-threshold = 9900
 plugin = webserver p2p json_rpc account_by_key reputation market_history
 plugin = database_api account_by_key_api network_broadcast_api reputation_api market_history_api condenser_api block_api rc_api
@@ -129,8 +134,13 @@ plugin = witness
 
 ### 2. fullnode
 ```
-file:  steem_api.tar.lz4
+docker image:
+ety001/steem-full-mira:0.23.1
 
+file:
+steem_api.tar.lz4
+
+plugin settings in config.ini:
 shared-file-full-threshold = 9900
 plugin = webserver p2p json_rpc account_by_key reputation market_history
 plugin = database_api account_by_key_api network_broadcast_api reputation_api market_history_api condenser_api block_api rc_api

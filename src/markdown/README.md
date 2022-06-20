@@ -65,6 +65,8 @@ services:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
+    ports:
+      - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
@@ -80,6 +82,8 @@ services:
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
+    ports:
+      - "8080:8080"
     links:
       - db:db
     restart: always
@@ -179,6 +183,8 @@ services:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
+    ports:
+      - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
@@ -194,6 +200,8 @@ services:
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
+    ports:
+      - "8080:8080"
     links:
       - db:db
     restart: always

@@ -21,7 +21,7 @@ steem_witness.tar.lz4
 plugin settings in config.ini:
 plugin = witness
 ```
-> Build a witness node: [A simple tuturial for a dockerize steem witness deployment](https://steemit.com/steem/@ety001/a-simple-tuturial-for-a-dockerize-steem-witness-deployment)
+> Build a witness node: [How to deploy a Steem Witness node by Docker?](https://steemit.com/witness/@ety001/how-to-deploy-a-steem-witness-node-by-docker)
 
 ### 2. fullnode
 ```

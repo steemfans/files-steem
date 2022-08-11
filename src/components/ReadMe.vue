@@ -92,4 +92,10 @@ export default {
   padding: 0;
   word-wrap: normal;
 }
+.markdown-body blockquote {
+  border-left: 5px solid #333;
+  background-color: #eff;
+  margin: 8px 0;
+  padding: 8px 0 8px 40px;
+}
 </style>

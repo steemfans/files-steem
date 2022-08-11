@@ -12,16 +12,26 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 
 ### 1. witness node
 ```
-file:  steem_witness.tar.lz4
+docker image:
+ety001/steem-mira:0.23.1
 
+file:
+steem_witness.tar.lz4
+
+plugin settings in config.ini:
 plugin = witness
 ```
-> Build a witness node: [A simple tuturial for a dockerize steem witness deployment](https://steemit.com/steem/@ety001/a-simple-tuturial-for-a-dockerize-steem-witness-deployment)
+> Build a witness node: [How to deploy a Steem Witness node by Docker?](https://steemit.com/witness/@ety001/how-to-deploy-a-steem-witness-node-by-docker)
 
 ### 2. fullnode
 ```
-file:  steem_api.tar.lz4
+docker image:
+ety001/steem-full-mira:0.23.1
 
+file:
+steem_api.tar.lz4
+
+plugin settings in config.ini:
 shared-file-full-threshold = 9900
 plugin = webserver p2p json_rpc account_by_key reputation market_history
 plugin = database_api account_by_key_api network_broadcast_api reputation_api market_history_api condenser_api block_api rc_api
@@ -29,8 +39,13 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 
 ### 3.ahnode
 ```
-file:  steem_ah.tar.lz4
+docker image:
+ety001/steem-ah-mira:0.23.0
 
+file:
+steem_ah.tar.lz4
+
+plugin settings in config.ini:
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 
@@ -50,6 +65,8 @@ services:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
+    ports:
+      - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
@@ -65,6 +82,8 @@ services:
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
+    ports:
+      - "8080:8080"
     links:
       - db:db
     restart: always
@@ -111,16 +130,26 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 
 ### 1. witness node
 ```
-file:  steem_witness.tar.lz4
+docker image:
+ety001/steem-mira:0.23.1
 
+file:
+steem_witness.tar.lz4
+
+plugin settings in config.ini:
 plugin = witness
 ```
 > 搭建见证人节点: [A simple tuturial for a dockerize steem witness deployment](https://steemit.com/steem/@ety001/a-simple-tuturial-for-a-dockerize-steem-witness-deployment)
 
 ### 2. fullnode
 ```
-file:  steem_api.tar.lz4
+docker image:
+ety001/steem-full-mira:0.23.1
 
+file:
+steem_api.tar.lz4
+
+plugin settings in config.ini:
 shared-file-full-threshold = 9900
 plugin = webserver p2p json_rpc account_by_key reputation market_history
 plugin = database_api account_by_key_api network_broadcast_api reputation_api market_history_api condenser_api block_api rc_api
@@ -128,8 +157,13 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 
 ### 3.ahnode
 ```
-file:  steem_ah.tar.lz4
+docker image:
+ety001/steem-ah-mira:0.23.0
 
+file:
+steem_ah.tar.lz4
+
+plugin settings in config.ini:
 plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
 ```
 
@@ -149,6 +183,8 @@ services:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
+    ports:
+      - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
@@ -164,6 +200,8 @@ services:
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
+    ports:
+      - "8080:8080"
     links:
       - db:db
     restart: always

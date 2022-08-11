@@ -22,7 +22,7 @@ export default {
   name: 'App',
   data() {
     return {
-      sitename: 'Steem Data Server',
+      sitename: 'Steem Backup Data Server',
     };
   },
   components: {

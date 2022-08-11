@@ -31,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ety001/files-steem:latest
+          tags: steemfans/files-steem:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

@@ -43,7 +43,8 @@ export default {
   name: 'FileBox',
   data() {
     return {
-      dataPath: 'https://files.steem.fans/s3',
+      dataPath: 'https://files.steem.fans/data',
+      downloadPath: 'https://files.steem.fans/hetzner',
       tableData: [],
       loading: false,
       currentPath: [],
@@ -61,8 +62,23 @@ export default {
           if (res.status !== 200) {
             this.$message.error('get folder info error!');
           }
-          this.tableData = this.parseXML(res.data);
+          this.tableData = this.parseJSON(res.data);
         });
+    },
+    parseJSON(jsonContent) {
+      if (!jsonContent) return [];
+      const tmp = [];
+      jsonContent.forEach(f => {
+        if (f.type !== 'file') return;
+        tmp.push({
+          fileName: f.name,
+          fileType: f.type,
+          filePath: `${this.downloadPath}/${f.name}`,
+          fileTime: this.getMomentDate(f.mtime),
+          fileSize: this.getReadableSize(f.size),
+        });
+      });
+      return tmp;
     },
     parseXML(xmlContent) {
       if (!xmlContent) return [];

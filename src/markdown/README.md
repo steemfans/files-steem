@@ -2,9 +2,12 @@
 
 Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. This server will supply latest data files of witness node and fullnode.
 
-## How to use
+## How to download data
 
-* You could visit [https://files.steem.fans](https://files.steem.fans) to explore and download all files I supply.
+* **HTTP/HTTPS**: You could visit [https://files.steem.fans](https://files.steem.fans) to get file name and `wget -c https://files.steem.fans/hetzner/<filename>`(Replace `<filename>` by backup data file name).
+* **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. Replace `<filename>` by backup data file name and replace `<your_local_path>` by your local path. The password is `gQlkbh3DryaWMQWt`.
+* **FTP**: Host: `u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
+* **SMB / CIFS**: Host: `smb://u319306-sub1.your-storagebox.de/u319306-sub1`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
 
 ## Plugin and other config References
 
@@ -120,9 +123,12 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 
 这里是 [@ety001](https://steemit.com/@ety001) 的Steem 数据服务器。这个服务器提供最新的见证人和全节点的数据备份。
 
-## 如何使用
+## 如何下载数据
 
-* 你可以直接访问 [https://files.steem.fans](https://files.steem.fans) 获取到你要下载的数据文件
+* **HTTP/HTTPS**: 你可以直接访问 [https://files.steem.fans](https://files.steem.fans) 获取文件名，然后执行 `wget -c https://files.steem.fans/hetzner/<filename>`(使用你获取到的备份文件名替换掉命令中的 `<filename>`).
+* **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. 使用你获取到的备份文件名替换掉命令中的 `<filename>`。用你本地的存储路径替换掉 `<your_local_path>`。 密码: `gQlkbh3DryaWMQWt`.
+* **FTP**: 主机地址: `u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`.
+* **SMB / CIFS**: 主机地址: `smb://u319306-sub1.your-storagebox.de/u319306-sub1`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`.
 
 ## 插件配置和其他配置参考
 

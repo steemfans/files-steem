@@ -236,4 +236,4 @@ max_wal_size = 4GB
 
 你也可以加入我们的 Discord 服务器 => [https://discord.gg/QTuZr5F](https://discord.gg/QTuZr5F) .
 
-PS: 我是Steem见证人，欢迎给我投票。 =》 [Vote ME!](https://auth.steem.fans/sign/account_witness_vote?approve=1&witness=ety001)
+PS: 我是Steem见证人，欢迎给我投票。 => [Vote ME!](https://auth.steem.fans/sign/account_witness_vote?approve=1&witness=ety001)

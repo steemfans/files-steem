@@ -47,8 +47,9 @@ export default {
 .markdown-body table tr:nth-child(2n) {
   background-color: #f6f8fa;
 }
-.markdown-body p code {
-  background-color: #f6f8fa;
+.markdown-body p code, .markdown-body ul li code {
+  background-color: #eee;
+  padding: 0 8px;
 }
 .markdown-body pre {
   word-wrap: normal;

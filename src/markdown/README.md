@@ -43,7 +43,7 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 
 ### 3.ahnode
 
-> Build a witness node: [How to deploy an Ahnode with official docker image?](https://steemit.com/witness/@ety001/how-to-deploy-an-ahnode-with-official-docker-image)
+> Build an ahnode node: [How to deploy an Ahnode with official docker image?](https://steemit.com/witness/@ety001/how-to-deploy-an-ahnode-with-official-docker-image)
 
 ### 4.hivemind
 ```
@@ -156,16 +156,8 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 ```
 
 ### 3.ahnode
-```
-docker image:
-ety001/steem-ah-mira:0.23.0
 
-file:
-steem_ah.tar.lz4
-
-plugin settings in config.ini:
-plugin = webserver p2p json_rpc condenser_api account_history_rocksdb account_history_api
-```
+> 搭建 ahnode 节点: [How to deploy an Ahnode with official docker image?](https://steemit.com/witness/@ety001/how-to-deploy-an-ahnode-with-official-docker-image)
 
 ### 4.hivemind
 ```

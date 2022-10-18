@@ -2,6 +2,8 @@
 
 Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. This server will supply latest data files of witness node and fullnode.
 
+If you want to get latest backup information, please follow here: [https://t.me/steem_backup](https://t.me/steem_backup).
+
 ## How to download data
 
 * **HTTP/HTTPS**: You could visit [https://files.steem.fans](https://files.steem.fans) to get file name and `wget -c https://files.steem.fans/hetzner/<filename>`(Replace `<filename>` by backup data file name).
@@ -115,6 +117,8 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 # 请先仔细阅读说明！！
 
 这里是 [@ety001](https://steemit.com/@ety001) 的Steem 数据服务器。这个服务器提供最新的见证人和全节点的数据备份。
+
+如果想获取最新的备份信息，请关注这里: [https://t.me/steem_backup](https://t.me/steem_backup).
 
 ## 如何下载数据
 

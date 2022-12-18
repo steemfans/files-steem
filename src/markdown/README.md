@@ -100,12 +100,12 @@ checkpoint_completion_target = 0.9
 checkpoint_timeout = 30min
 max_wal_size = 4GB
 
-5) change the configurations of postgres in *my-postgres.conf* to fit your system
-6) unarchive the *hivemind.sql.tar.lz4* file: *tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp*
-7) run *docker-compose -f docker-compose.yml up db -d* to start up Postgres
-8) run *docker-compose exec -it db /bin/bash* to get in Postgres DB container and then
-   run *psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem* to import DB 
-9) run *docker-compose -f docker-compose.yml up hive -d* to start up Hivemind
+5) change the configurations of postgres in `my-postgres.conf` to fit your system
+6) unarchive the `hivemind.sql.tar.lz4` file: `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
+7) run `docker-compose -f docker-compose.yml up db -d` to start up Postgres
+8) run `docker-compose exec -it db /bin/bash` to get in Postgres DB container and then
+   run `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` to import DB 
+9) run `docker-compose -f docker-compose.yml up hive -d` to start up Hivemind
 ```
 
 ## Other
@@ -206,7 +206,7 @@ services:
       - db:db
     restart: always
 
-4) 创建 postgre 配置文件 **my-postgres.conf**，内容如下:
+4) 创建 postgre 配置文件 ***my-postgres.conf***，内容如下:
 
 listen_addresses = '*'
 effective_cache_size = 12GB # 50-75% of avail memory
@@ -219,12 +219,12 @@ checkpoint_completion_target = 0.9
 checkpoint_timeout = 30min
 max_wal_size = 4GB
 
-5) 根据你的系统情况调整 *my-postgres.conf* 文件中的 postgres 参数
-6) 解压缩 *hivemind.sql.tar.lz4* 到 */tmp* 目录, *tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp*
-7) 运行 *docker-compose -f docker-compose.yml up db -d* 启动 Postgres 数据库
-8) 运行 *docker-compose exec -it db /bin/bash* 进入 Postgres DB 容器，
-   然后执行 *psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem* 导入数据库
-9) 运行 *docker-compose -f docker-compose.yml up hive -d* 启动 Hivemind
+5) 根据你的系统情况调整 `my-postgres.conf` 文件中的 postgres 参数
+6) 解压缩 *hivemind.sql.tar.lz4* 到 `/tmp` 目录, `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
+7) 运行 `docker-compose -f docker-compose.yml up db -d` 启动 Postgres 数据库
+8) 运行 `docker-compose exec -it db /bin/bash` 进入 Postgres DB 容器，
+   然后执行 `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` 导入数据库
+9) 运行 `docker-compose -f docker-compose.yml up hive -d` 启动 Hivemind
 ```
 
 ## 其他

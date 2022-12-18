@@ -4,7 +4,7 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 
 **If you want to get latest backup information, please follow here: [https://t.me/steem_fans](https://t.me/steem_fans) .**
 
-## How to download data
+## I. How to download data
 
 * **HTTP/HTTPS**: You could visit [https://files.steem.fans](https://files.steem.fans) to get file name and `wget -c https://files.steem.fans/hetzner/<filename>`(Replace `<filename>` by backup data file name).
 * **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. Replace `<filename>` by backup data file name and replace `<your_local_path>` by your local path. The password is `gQlkbh3DryaWMQWt`.
@@ -12,7 +12,7 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 * **WebDAV**: Host: `https://u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
 * **SMB / CIFS**: `mount -t cifs //u319306-sub1.your-storagebox.de/u319306-sub1 /<your_local_path> -o username=u319306-sub1,password=gQlkbh3DryaWMQWt`. Replace `<your_local_path>` by your local path.
 
-## Plugin and other config References
+## II. Plugin and other config References
 
 > **NOTICE**: Please comment `shared-file-dir = /shm/` first.
 
@@ -48,13 +48,16 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 > Build an ahnode node: [How to deploy an Ahnode with official docker image?](https://steemit.com/witness/@ety001/how-to-deploy-an-ahnode-with-official-docker-image)
 
 ### 4.hivemind
+
 ```
-file: hivemind.tar.lz4
+file: hivemind.sql.tar.lz4
+```
 
-1) make a folder named hivemind
-2) cd hivemind
-3) create a docker-compose.yml file with below content:
+* 1) make a folder named hivemind
+* 2) cd hivemind
+* 3) create a docker-compose.yml file with below content:
 
+```
 version: '3'
 services:
   db:
@@ -86,9 +89,11 @@ services:
     links:
       - db:db
     restart: always
+```
 
-4) create the postgre config file *my-postgres.conf* with below content:
+* 4) create the postgre config file *my-postgres.conf* with below content:
 
+```
 listen_addresses = '*'
 effective_cache_size = 12GB # 50-75% of avail memory
 maintenance_work_mem = 2GB
@@ -99,16 +104,16 @@ synchronous_commit = off
 checkpoint_completion_target = 0.9
 checkpoint_timeout = 30min
 max_wal_size = 4GB
-
-5) change the configurations of postgres in `my-postgres.conf` to fit your system
-6) unarchive the `hivemind.sql.tar.lz4` file: `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
-7) run `docker-compose -f docker-compose.yml up db -d` to start up Postgres
-8) run `docker-compose exec -it db /bin/bash` to get in Postgres DB container and then
-   run `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` to import DB 
-9) run `docker-compose -f docker-compose.yml up hive -d` to start up Hivemind
 ```
 
-## Other
+* 5) change the configurations of postgres in `my-postgres.conf` to fit your system
+* 6) unarchive the `hivemind.sql.tar.lz4` file: `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
+* 7) run `docker-compose -f docker-compose.yml up db -d` to start up Postgres
+* 8) run `docker-compose exec -it db /bin/bash` to get in Postgres DB container and then
+   run `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` to import DB 
+* 9) run `docker-compose -f docker-compose.yml up hive -d` to start up Hivemind
+
+## III. Other
 
 If you have any issue, please email me. My email is [work#akawa.ink] (replace # to @).
 
@@ -124,7 +129,7 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 
 **如果想获取最新的备份信息，请关注这里: [https://t.me/steem_fans](https://t.me/steem_fans) .**
 
-## 如何下载数据
+## 一. 如何下载数据
 
 * **HTTP/HTTPS**: 你可以直接访问 [https://files.steem.fans](https://files.steem.fans) 获取文件名，然后执行 `wget -c https://files.steem.fans/hetzner/<filename>`(使用你获取到的备份文件名替换掉命令中的 `<filename>`).
 * **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. 使用你获取到的备份文件名替换掉命令中的 `<filename>`。用你本地的存储路径替换掉 `<your_local_path>`。 密码: `gQlkbh3DryaWMQWt`.
@@ -132,7 +137,7 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 * **WebDAV**: 主机地址: `https://u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`.
 * **SMB / CIFS**: `mount -t cifs //u319306-sub1.your-storagebox.de/u319306-sub1 /<your_local_path> -o username=u319306-sub1,password=gQlkbh3DryaWMQWt`. 使用你本地目录地址替换掉 `<your_local_path>`.
 
-## 插件配置和其他配置参考
+## 二. 插件配置和其他配置参考
 
 > **注意**: 请先注释掉 `shared-file-dir = /shm/`。
 
@@ -169,12 +174,14 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 
 ### 4.hivemind
 ```
-file: hivemind.tar.lz4
+file: hivemind.sql.tar.lz4
+```
 
-1) 创建hivemind目录
-2) cd hivemind
-3) 创建 docker-compose.yml，内容如下:
+* 1) 创建hivemind目录
+* 2) cd hivemind
+* 3) 创建 docker-compose.yml，内容如下:
 
+```
 version: '3'
 services:
   db:
@@ -205,9 +212,11 @@ services:
     links:
       - db:db
     restart: always
+```
 
-4) 创建 postgre 配置文件 ***my-postgres.conf***，内容如下:
+* 4) 创建 postgre 配置文件 ***my-postgres.conf***，内容如下:
 
+```
 listen_addresses = '*'
 effective_cache_size = 12GB # 50-75% of avail memory
 maintenance_work_mem = 2GB
@@ -218,16 +227,16 @@ synchronous_commit = off
 checkpoint_completion_target = 0.9
 checkpoint_timeout = 30min
 max_wal_size = 4GB
-
-5) 根据你的系统情况调整 `my-postgres.conf` 文件中的 postgres 参数
-6) 解压缩 *hivemind.sql.tar.lz4* 到 `/tmp` 目录, `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
-7) 运行 `docker-compose -f docker-compose.yml up db -d` 启动 Postgres 数据库
-8) 运行 `docker-compose exec -it db /bin/bash` 进入 Postgres DB 容器，
-   然后执行 `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` 导入数据库
-9) 运行 `docker-compose -f docker-compose.yml up hive -d` 启动 Hivemind
 ```
 
-## 其他
+* 5) 根据你的系统情况调整 `my-postgres.conf` 文件中的 postgres 参数
+* 6) 解压缩 *hivemind.sql.tar.lz4* 到 `/tmp` 目录, `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
+* 7) 运行 `docker-compose -f docker-compose.yml up db -d` 启动 Postgres 数据库
+* 8) 运行 `docker-compose exec -it db /bin/bash` 进入 Postgres DB 容器，
+   然后执行 `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` 导入数据库
+* 9) 运行 `docker-compose -f docker-compose.yml up hive -d` 启动 Hivemind
+
+## 三. 其他
 
 如果有什么问题，可以直接给我发邮件，地址是 [work#akawa.ink] (把 # 换成 @)。
 

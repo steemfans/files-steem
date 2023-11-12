@@ -7,7 +7,7 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 ## I. How to download data
 
 * **HTTP/HTTPS**: You could visit [https://files.steem.fans](https://files.steem.fans) to get file name and `wget -c https://files.steem.fans/hetzner/<filename>`(Replace `<filename>` by backup data file name).
-* **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. Replace `<filename>` by backup data file name and replace `<your_local_path>` by your local path. The password is `gQlkbh3DryaWMQWt`.
+* **Rsync**: `rsync -avzhP -e 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. Replace `<filename>` by backup data file name and replace `<your_local_path>` by your local path. The password is `gQlkbh3DryaWMQWt`.
 * **FTP**: Host: `u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
 * **WebDAV**: Host: `https://u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
 * **SMB / CIFS**: `mount -t cifs //u319306-sub1.your-storagebox.de/u319306-sub1 /<your_local_path> -o username=u319306-sub1,password=gQlkbh3DryaWMQWt`. Replace `<your_local_path>` by your local path.

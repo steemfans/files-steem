@@ -8,7 +8,7 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 
 * **HTTP/HTTPS**: You could visit [https://files.steem.fans](https://files.steem.fans) to get file name and `wget -c https://files.steem.fans/hetzner/<filename>`(Replace `<filename>` by backup data file name).
 * **Rsync**: `rsync -avzhP -e 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. Replace `<filename>` by backup data file name and replace `<your_local_path>` by your local path. The password is `gQlkbh3DryaWMQWt`.
-* **FTP**: Host: `u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
+* **FTP**: Host: `u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`. Example command: `lftp -e "pget -n 10 -c ftp://u319306-sub1:gQlkbh3DryaWMQWt@u319306-sub1.your-storagebox.de/steem_witness_20241021.tar.lz4; exit"`.
 * **WebDAV**: Host: `https://u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
 * **SMB / CIFS**: `mount -t cifs //u319306-sub1.your-storagebox.de/u319306-sub1 /<your_local_path> -o username=u319306-sub1,password=gQlkbh3DryaWMQWt`. Replace `<your_local_path>` by your local path.
 
@@ -133,7 +133,7 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 
 * **HTTP/HTTPS**: 你可以直接访问 [https://files.steem.fans](https://files.steem.fans) 获取文件名，然后执行 `wget -c https://files.steem.fans/hetzner/<filename>`(使用你获取到的备份文件名替换掉命令中的 `<filename>`).
 * **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. 使用你获取到的备份文件名替换掉命令中的 `<filename>`。用你本地的存储路径替换掉 `<your_local_path>`。 密码: `gQlkbh3DryaWMQWt`.
-* **FTP**: 主机地址: `u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`.
+* **FTP**: 主机地址: `u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`. 示例命令: `lftp -e "pget -n 10 -c ftp://u319306-sub1:gQlkbh3DryaWMQWt@u319306-sub1.your-storagebox.de/steem_witness_20241021.tar.lz4; exit"`.
 * **WebDAV**: 主机地址: `https://u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`.
 * **SMB / CIFS**: `mount -t cifs //u319306-sub1.your-storagebox.de/u319306-sub1 /<your_local_path> -o username=u319306-sub1,password=gQlkbh3DryaWMQWt`. 使用你本地目录地址替换掉 `<your_local_path>`.
 

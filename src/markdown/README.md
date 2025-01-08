@@ -62,6 +62,7 @@ version: '3'
 services:
   db:
     image: postgres:12
+    container_name: hivemind_db
     environment:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
@@ -73,14 +74,23 @@ services:
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
       - /tmp:/tmp
     restart: always
+  redis:
+    image: redis
+    container_name: hivemind_redis
+    volumes:
+      - ./redis_data:/data
+    restart: always
   hive:
     depends_on:
       - db
+      - redis
     image: steemit/hivemind:latest
+    container_name: hivemind_hive
     environment:
       DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
       LOG_LEVEL: INFO
       STEEMD_URL: http://172.20.0.114:8091 # This is the fullnode api
+      REDIS_URL: redis://redis:6379
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
@@ -88,6 +98,7 @@ services:
       - "8080:8080"
     links:
       - db:db
+      - redis:redis
     restart: always
 ```
 
@@ -186,6 +197,7 @@ version: '3'
 services:
   db:
     image: postgres:12
+    container_name: hivemind_db
     environment:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
@@ -195,15 +207,25 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
+      - /tmp:/tmp
+    restart: always
+  redis:
+    image: redis
+    container_name: hivemind_redis
+    volumes:
+      - ./redis_data:/data
     restart: always
   hive:
     depends_on:
       - db
+      - redis
     image: steemit/hivemind:latest
+    container_name: hivemind_hive
     environment:
       DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
       LOG_LEVEL: INFO
-      STEEMD_URL: http://172.20.0.114:8091 # 换成你的fullnode地址或其他可用的api地址
+      STEEMD_URL: http://172.20.0.114:8091 # This is the fullnode api
+      REDIS_URL: redis://redis:6379
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
@@ -211,6 +233,7 @@ services:
       - "8080:8080"
     links:
       - db:db
+      - redis:redis
     restart: always
 ```
 

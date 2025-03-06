@@ -68,7 +68,7 @@ services:
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
     ports:
-      - "5432:5432"
+      #- "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
@@ -203,7 +203,7 @@ services:
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
     ports:
-      - "5432:5432"
+      #- "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf

@@ -14,6 +14,10 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Get commit SHA short
+        id: commit
+        run: echo "sha7=$(git rev-parse --short=7 HEAD)" >> $GITHUB_OUTPUT
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       -
@@ -27,13 +31,21 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v6
         id: docker_build
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: steemfans/files-steem:latest
+          tags: |
+            steemfans/files-steem:latest
+            steemfans/files-steem:latest-${{ steps.commit.outputs.sha7 }}
       -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
+        name: Image info
+        run: |
+          echo "=== Docker Image Information ==="
+          echo "Image: steemfans/files-steem"
+          echo "Tags:"
+          echo "  - steemfans/files-steem:latest"
+          echo "  - steemfans/files-steem:latest-${{ steps.commit.outputs.sha7 }}"
+          echo "Digest: ${{ steps.docker_build.outputs.digest }}"
+          echo "================================"

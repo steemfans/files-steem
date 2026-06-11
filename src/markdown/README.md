@@ -4,15 +4,15 @@ Hi there, this is [@ety001](https://steemit.com/@ety001)'s steem data server. Th
 
 **If you want to get latest backup information, please follow here: [https://t.me/steem_fans](https://t.me/steem_fans) .**
 
-## I. How to download data
+## How to download data
 
 * **HTTP/HTTPS**: You could visit [https://files.steem.fans](https://files.steem.fans) to get file name and `wget -c https://files.steem.fans/hetzner/<filename>`(Replace `<filename>` by backup data file name).
-* **Rsync**: `rsync -avzhP -e 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. Replace `<filename>` by backup data file name and replace `<your_local_path>` by your local path. The password is `gQlkbh3DryaWMQWt`.
-* **FTP**: Host: `u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`. Example command: `lftp -e "pget -n 10 -c ftp://u319306-sub1:gQlkbh3DryaWMQWt@u319306-sub1.your-storagebox.de/steem_witness_20241021.tar.lz4; exit"`.
+* **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. Replace `<filename>` by backup data file name and replace `<your_local_path>` by your local path. The password is `gQlkbh3DryaWMQWt`.
+* **FTP**: Host: `u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
 * **WebDAV**: Host: `https://u319306-sub1.your-storagebox.de`, Username: `u319306-sub1`, Password: `gQlkbh3DryaWMQWt`.
 * **SMB / CIFS**: `mount -t cifs //u319306-sub1.your-storagebox.de/u319306-sub1 /<your_local_path> -o username=u319306-sub1,password=gQlkbh3DryaWMQWt`. Replace `<your_local_path>` by your local path.
 
-## II. Plugin and other config References
+## Plugin and other config References
 
 > **NOTICE**: Please comment `shared-file-dir = /shm/` first.
 
@@ -49,30 +49,35 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 
 ### 4.hivemind
 
-```
-file: hivemind.sql.tar.lz4
-```
+**Backup format changed since 2025-06.** The new backup file is a PostgreSQL custom-format dump (`*.dump`) created with `pg_dump -Fc -Z6`. If you are using the old `.sql.tar.lz4` backup, see the legacy instructions below.
 
-* 1) make a folder named hivemind
-* 2) cd hivemind
-* 3) create a docker-compose.yml file with below content:
+#### New format (*.dump) — pg_restore
 
 ```
+file: hivemind_YYYYMMDD.dump (PostgreSQL custom format, ~112GB compressed)
+```
+
+1) Make a folder named hivemind
+2) cd hivemind
+3) Download the dump file and place it in this folder
+4) Create a `docker-compose.yml` file with below content:
+
+```yaml
 version: '3'
 services:
   db:
-    image: postgres:12
+    image: postgres:15
     container_name: hivemind_db
     environment:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
-    ports:
-      #- "5432:5432"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
-      - /tmp:/tmp
+      - ./hivemind_YYYYMMDD.dump:/tmp/hivemind.dump
     restart: always
   redis:
     image: redis
@@ -89,27 +94,25 @@ services:
     environment:
       DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
       LOG_LEVEL: INFO
-      STEEMD_URL: http://172.20.0.114:8091 # This is the fullnode api
+      STEEMD_URL: https://api.steemit.com  # Replace with your fullnode URL
       REDIS_URL: redis://redis:6379
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
-    ports:
-      - "8080:8080"
     links:
       - db:db
       - redis:redis
     restart: always
 ```
 
-* 4) create the postgre config file *my-postgres.conf* with below content:
+5) Create the PostgreSQL config file `my-postgres.conf` with below content (adjust to fit your system):
 
 ```
 listen_addresses = '*'
-effective_cache_size = 12GB # 50-75% of avail memory
+effective_cache_size = 12GB
 maintenance_work_mem = 2GB
-random_page_cost = 2.0      # assuming SSD storage
-shared_buffers = 4GB        # 25% of memory
+random_page_cost = 1.0
+shared_buffers = 4GB
 work_mem = 512MB
 synchronous_commit = off
 checkpoint_completion_target = 0.9
@@ -117,14 +120,29 @@ checkpoint_timeout = 30min
 max_wal_size = 4GB
 ```
 
-* 5) change the configurations of postgres in `my-postgres.conf` to fit your system
-* 6) unarchive the `hivemind.sql.tar.lz4` file: `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
-* 7) run `docker-compose -f docker-compose.yml up db -d` to start up Postgres
-* 8) run `docker-compose exec -it db /bin/bash` to get in Postgres DB container and then
-   run `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` to import DB 
-* 9) run `docker-compose -f docker-compose.yml up hive -d` to start up Hivemind
+6) Start PostgreSQL: `docker compose up db -d`
 
-## III. Other
+7) Restore the database:
+```
+cat hivemind_YYYYMMDD.dump | docker exec -i hivemind_db pg_restore -U steem -d hivedb --no-owner --no-privileges --no-comments --if-exists --clean
+```
+Or if the dump file is mounted inside the container (as shown in docker-compose.yml above):
+```
+docker exec hivemind_db pg_restore -U steem -d hivedb --no-owner --no-privileges --no-comments --if-exists --clean /tmp/hivemind.dump
+```
+
+8) Start Hivemind: `docker compose up hive -d`
+
+#### Legacy format (*.sql.tar.lz4) — psql
+
+If you are restoring from the old `.sql.tar.lz4` backup:
+
+1) Decompress: `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
+2) Start PostgreSQL: `docker compose up db -d`
+3) Import: `docker exec -it hivemind_db psql -f /tmp/hivemind.sql -d hivedb -U steem`
+4) Start Hivemind: `docker compose up hive -d`
+
+## Other
 
 If you have any issue, please email me. My email is [work#akawa.ink] (replace # to @).
 
@@ -140,15 +158,15 @@ PS: I'm also a witness. It's pleasure to get your vote. => [Vote ME!](https://au
 
 **如果想获取最新的备份信息，请关注这里: [https://t.me/steem_fans](https://t.me/steem_fans) .**
 
-## 一. 如何下载数据
+## 如何下载数据
 
 * **HTTP/HTTPS**: 你可以直接访问 [https://files.steem.fans](https://files.steem.fans) 获取文件名，然后执行 `wget -c https://files.steem.fans/hetzner/<filename>`(使用你获取到的备份文件名替换掉命令中的 `<filename>`).
 * **Rsync**: `rsync -avzhP 'ssh -p23' u319306-sub1@u319306-sub1.your-storagebox.de:/home/<filename> /<your_local_path>`. 使用你获取到的备份文件名替换掉命令中的 `<filename>`。用你本地的存储路径替换掉 `<your_local_path>`。 密码: `gQlkbh3DryaWMQWt`.
-* **FTP**: 主机地址: `u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`. 示例命令: `lftp -e "pget -n 10 -c ftp://u319306-sub1:gQlkbh3DryaWMQWt@u319306-sub1.your-storagebox.de/steem_witness_20241021.tar.lz4; exit"`.
+* **FTP**: 主机地址: `u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`.
 * **WebDAV**: 主机地址: `https://u319306-sub1.your-storagebox.de`, 用户名: `u319306-sub1`, 密码: `gQlkbh3DryaWMQWt`.
 * **SMB / CIFS**: `mount -t cifs //u319306-sub1.your-storagebox.de/u319306-sub1 /<your_local_path> -o username=u319306-sub1,password=gQlkbh3DryaWMQWt`. 使用你本地目录地址替换掉 `<your_local_path>`.
 
-## 二. 插件配置和其他配置参考
+## 插件配置和其他配置参考
 
 > **注意**: 请先注释掉 `shared-file-dir = /shm/`。
 
@@ -184,30 +202,36 @@ plugin = database_api account_by_key_api network_broadcast_api reputation_api ma
 > 搭建 ahnode 节点: [How to deploy an Ahnode with official docker image?](https://steemit.com/witness/@ety001/how-to-deploy-an-ahnode-with-official-docker-image)
 
 ### 4.hivemind
-```
-file: hivemind.sql.tar.lz4
-```
 
-* 1) 创建hivemind目录
-* 2) cd hivemind
-* 3) 创建 docker-compose.yml，内容如下:
+**备份格式自 2025-06 起已变更。** 新备份文件为 PostgreSQL 自定义格式 dump (`*.dump`)，由 `pg_dump -Fc -Z6` 生成。如果你使用的是旧的 `.sql.tar.lz4` 备份，请参阅下方的旧版说明。
+
+#### 新格式 (*.dump) — pg_restore
 
 ```
+file: hivemind_YYYYMMDD.dump (PostgreSQL 自定义格式, 压缩后约 112GB)
+```
+
+1) 创建 hivemind 目录
+2) cd hivemind
+3) 下载 dump 文件并放在此目录下
+4) 创建 `docker-compose.yml`，内容如下:
+
+```yaml
 version: '3'
 services:
   db:
-    image: postgres:12
+    image: postgres:15
     container_name: hivemind_db
     environment:
       POSTGRES_USER: steem
       POSTGRES_PASSWORD: steem123
       POSTGRES_DB: hivedb
-    ports:
-      #- "5432:5432"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
       - ./my-postgres.conf:/etc/postgresql/postgresql.conf
-      - /tmp:/tmp
+      - ./hivemind_YYYYMMDD.dump:/tmp/hivemind.dump
     restart: always
   redis:
     image: redis
@@ -224,27 +248,25 @@ services:
     environment:
       DATABASE_URL: postgresql://steem:steem123@db:5432/hivedb
       LOG_LEVEL: INFO
-      STEEMD_URL: http://172.20.0.114:8091 # This is the fullnode api
+      STEEMD_URL: https://api.steemit.com  # 替换为你的 fullnode 地址
       REDIS_URL: redis://redis:6379
       SYNC_SERVICE: 1
       MAX_BATCH: 50
       MAX_WORKERS: 2
-    ports:
-      - "8080:8080"
     links:
       - db:db
       - redis:redis
     restart: always
 ```
 
-* 4) 创建 postgre 配置文件 ***my-postgres.conf***，内容如下:
+5) 创建 PostgreSQL 配置文件 `my-postgres.conf`，内容如下（请根据你的系统调整参数）:
 
 ```
 listen_addresses = '*'
-effective_cache_size = 12GB # 50-75% of avail memory
+effective_cache_size = 12GB
 maintenance_work_mem = 2GB
-random_page_cost = 2.0      # assuming SSD storage
-shared_buffers = 4GB        # 25% of memory
+random_page_cost = 1.0
+shared_buffers = 4GB
 work_mem = 512MB
 synchronous_commit = off
 checkpoint_completion_target = 0.9
@@ -252,14 +274,29 @@ checkpoint_timeout = 30min
 max_wal_size = 4GB
 ```
 
-* 5) 根据你的系统情况调整 `my-postgres.conf` 文件中的 postgres 参数
-* 6) 解压缩 *hivemind.sql.tar.lz4* 到 `/tmp` 目录, `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
-* 7) 运行 `docker-compose -f docker-compose.yml up db -d` 启动 Postgres 数据库
-* 8) 运行 `docker-compose exec -it db /bin/bash` 进入 Postgres DB 容器，
-   然后执行 `psql -f /tmp/hivemind.sql -d hivedb -h localhost -p 5432 -U steem` 导入数据库
-* 9) 运行 `docker-compose -f docker-compose.yml up hive -d` 启动 Hivemind
+6) 启动 PostgreSQL: `docker compose up db -d`
 
-## 三. 其他
+7) 恢复数据库:
+```
+cat hivemind_YYYYMMDD.dump | docker exec -i hivemind_db pg_restore -U steem -d hivedb --no-owner --no-privileges --no-comments --if-exists --clean
+```
+或者如果 dump 文件已经挂载到容器内（如上面 docker-compose.yml 所示）:
+```
+docker exec hivemind_db pg_restore -U steem -d hivedb --no-owner --no-privileges --no-comments --if-exists --clean /tmp/hivemind.dump
+```
+
+8) 启动 Hivemind: `docker compose up hive -d`
+
+#### 旧格式 (*.sql.tar.lz4) — psql
+
+如果你使用的是旧的 `.sql.tar.lz4` 备份:
+
+1) 解压缩: `tar --use-compress-program=lz4 -xvf hivemind.sql.tar.lz4 -C /tmp`
+2) 启动 PostgreSQL: `docker compose up db -d`
+3) 导入: `docker exec -it hivemind_db psql -f /tmp/hivemind.sql -d hivedb -U steem`
+4) 启动 Hivemind: `docker compose up hive -d`
+
+## 其他
 
 如果有什么问题，可以直接给我发邮件，地址是 [work#akawa.ink] (把 # 换成 @)。
 

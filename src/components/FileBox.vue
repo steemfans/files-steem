@@ -9,11 +9,11 @@
         <el-table-column
           label="FileName"
           width="300">
-          <template slot-scope="scope">
-            <i class="el-icon-document"></i>
+          <template #default="{ row }">
+            <el-icon><Document /></el-icon>
             <span style="margin-left: 10px">
-              <a :href="scope.row.filePath" target="_blank">
-                {{ scope.row.fileName }}
+              <a :href="row.filePath" target="_blank">
+                {{ row.fileName }}
               </a>
             </span>
           </template>
@@ -22,8 +22,8 @@
           prop="fileSize"
           label="Size"
           width="100">
-          <template slot-scope="scope">
-            <span v-if="scope.row.fileSize">{{ scope.row.fileSize }}</span>
+          <template #default="{ row }">
+            <span v-if="row.fileSize">{{ row.fileSize }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -37,10 +37,24 @@
 
 <script>
 import axios from 'axios';
-import moment from 'moment';
+import { ElMessage } from 'element-plus';
+import { Document } from '@element-plus/icons-vue';
+
+const RELATIVE_DIVISIONS = [
+  { amount: 60, unit: 'second' },
+  { amount: 60, unit: 'minute' },
+  { amount: 24, unit: 'hour' },
+  { amount: 7, unit: 'day' },
+  { amount: 4.34524, unit: 'week' },
+  { amount: 12, unit: 'month' },
+  { amount: Number.POSITIVE_INFINITY, unit: 'year' },
+];
 
 export default {
   name: 'FileBox',
+  components: {
+    Document,
+  },
   data() {
     return {
       dataPath: 'https://files.steem.fans/data',
@@ -60,9 +74,13 @@ export default {
         .then(res => {
           this.loading = false;
           if (res.status !== 200) {
-            this.$message.error('get folder info error!');
+            ElMessage.error('get folder info error!');
           }
           this.tableData = this.parseJSON(res.data);
+        })
+        .catch(() => {
+          this.loading = false;
+          ElMessage.error('get folder info error!');
         });
     },
     parseJSON(jsonContent) {
@@ -74,7 +92,7 @@ export default {
           fileName: f.name,
           fileType: f.type,
           filePath: `${this.downloadPath}/${f.name}`,
-          fileTime: this.getMomentDate(f.mtime),
+          fileTime: this.getRelativeDate(f.mtime),
           fileSize: this.getReadableSize(f.size),
         });
       });
@@ -92,7 +110,7 @@ export default {
           fileName: f.childNodes[0].innerHTML,
           fileType: 'file',
           filePath: `${this.dataPath}/${f.childNodes[0].innerHTML}`,
-          fileTime: this.getMomentDate(f.childNodes[1].innerHTML),
+          fileTime: this.getRelativeDate(f.childNodes[1].innerHTML),
           fileSize: this.getReadableSize(f.childNodes[3].innerHTML),
         };
         result.push(fileInfo);
@@ -103,9 +121,18 @@ export default {
       var i = Math.floor(Math.log(size) / Math.log(1024));
       return (size / Math.pow(1024, i)).toFixed(2) * 1 + ['B', 'kB', 'MB', 'GB', 'TB'][i];
     },
-    getMomentDate(time) {
-      var m = moment(new Date(time));
-      return (time && m.isValid())? m.fromNow() : null;
+    getRelativeDate(time) {
+      const date = new Date(time);
+      if (!time || Number.isNaN(date.getTime())) return null;
+      const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+      let duration = (date.getTime() - Date.now()) / 1000;
+      for (const division of RELATIVE_DIVISIONS) {
+        if (Math.abs(duration) < division.amount) {
+          return rtf.format(Math.round(duration), division.unit);
+        }
+        duration /= division.amount;
+      }
+      return null;
     },
   },
 }

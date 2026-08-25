@@ -1,18 +1,24 @@
 <template>
   <el-row>
     <el-col :span="24">
-        <VueShowdown :markdown="readme" class="markdown-body" />
+      <div class="markdown-body" v-html="rendered"></div>
     </el-col>
   </el-row>
 </template>
 <script>
-import readme from '@/markdown/README.md';
+import MarkdownIt from 'markdown-it';
+import readme from '@/markdown/README.md?raw';
+
+const markdown = new MarkdownIt({
+  html: true,
+  linkify: true,
+});
 
 export default {
   name: 'ReadMe',
   data() {
     return {
-      readme,
+      rendered: markdown.render(readme),
     };
   },
 }

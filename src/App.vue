@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-row type="flex" justify="center" :gutter="20">
+    <el-row justify="center" :gutter="20">
       <el-col :xs="{span: 24}" :sm="{span: 20}" :md="{span: 16}" :lg="{span: 12}" style="padding: 0 30px;">
         <el-row>
           <el-col :span="24">
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import FileBox from '@/components/FileBox';
-import ReadMe from '@/components/ReadMe';
+import FileBox from '@/components/FileBox.vue';
+import ReadMe from '@/components/ReadMe.vue';
 
 export default {
   name: 'App',
